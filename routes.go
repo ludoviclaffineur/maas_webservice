@@ -28,24 +28,24 @@ var routes = Routes{
 		"PoppyIndex",
 		"GET",
 		"/poppy/bookings",
-		PoppyIndex,
+		HttpAuthenticate(PoppyIndex),
 	},
 	Route{
 		"PoppyCreate",
 		"POST",
 		"/poppy/bookings",
-		PoppyCreate,
+		HttpAuthenticate(PoppyCreate),
 	},
 	Route{
 		"PoppyShow",
 		"GET",
 		"/poppy/bookings/{bookingId}",
-		PoppyShow,
+		HttpAuthenticate(PoppyShow),
 	},
 	Route{
 		"PoppyUpdate",
 		"PUT",
 		"/poppy/bookings/{bookingId}",
-		PoppyUpdate,
+		HttpAuthenticate(PoppyUpdate),
 	},
 }

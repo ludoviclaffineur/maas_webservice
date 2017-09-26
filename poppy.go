@@ -16,11 +16,11 @@ type Poppy struct {
 type Poppies []Poppy
 
 type MaasRequest struct {
-	Mode      string    `json:"mode"`
-	FromLat   float64   `json:"fromLat"`
-	FromLon   float64   `json:"fromLon"`
-	ToLat     float64   `json:"toLat"`
-	ToLon     float64   `json:"toLon"`
-	StartTime time.Time `json:"startTime"`
-	EndTime   time.Time `json:"endTime"`
+	Mode      string    `schema:"mode"`
+	FromLat   float64   `schema:"fromLat"`
+	FromLon   float64   `schema:"fromLon"`
+	ToLat     float64   `schema:"toLat"`
+	ToLon     float64   `schema:"toLon"`
+	StartTime time.Time `schema:"startTime"`
+	EndTime   time.Time `schema:"endTime"`
 }

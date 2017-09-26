@@ -5,9 +5,18 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"strconv"
 	"time"
+
+	"github.com/gorilla/schema"
 )
+
+func HttpAuthenticate(fn func(w http.ResponseWriter, r *http.Request)) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		log.Println("starting")
+		fn(w, r)
+		log.Println("completed")
+	}
+}
 
 var poppiesMap = []Poppy{
 	Poppy{
@@ -86,6 +95,7 @@ type price struct {
 	Amount   float64 `json:"amount"`
 	Currency string  `json:"currency"`
 }
+
 type terms struct {
 	Price price `json:"price"`
 }
@@ -100,20 +110,16 @@ type optionResponse struct {
 PoppyOptions : to test : curl -i -H "Accept: application/json" "127.0.0.1:8080/poppy/bookings/options?fromLat=54.25"
 */
 func PoppyOptions(w http.ResponseWriter, r *http.Request) {
-	var maasRequest MaasRequest
-	log.Printf("Je suis dedans")
-	maasRequest.Mode = r.URL.Query().Get("mode")
-	// Shit begin ---
-	i, err := strconv.ParseFloat(r.URL.Query().Get("fromLat"), 64)
-	maasRequest.FromLat = i
-	maasRequest.FromLon, err = strconv.ParseFloat(r.URL.Query().Get("fromLon"), 64)
-	maasRequest.ToLat, err = strconv.ParseFloat(r.URL.Query().Get("toLat"), 64)
-	maasRequest.ToLon, err = strconv.ParseFloat(r.URL.Query().Get("toLong"), 64)
-	// this should be done like this the parameters gathering
-	if err != nil {
-		// panic(err)
+	// gather URL param to struct
+	if err := r.ParseForm(); err != nil {
+		panic(err)
+	}
+	maasRequest := new(MaasRequest)
+	if err := schema.NewDecoder().Decode(maasRequest, r.Form); err != nil {
+		panic(err)
 	}
 	var res []optionResponse
+	// create stuct for the JSON
 	for _, poppy := range poppiesMap {
 		option := optionResponse{
 			Leg: Leg{
@@ -142,7 +148,7 @@ func PoppyOptions(w http.ResponseWriter, r *http.Request) {
 		}
 		res = append(res, option)
 	}
-
+	// return JSON
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.WriteHeader(http.StatusOK)
 	if err := json.NewEncoder(w).Encode(res); err != nil {
