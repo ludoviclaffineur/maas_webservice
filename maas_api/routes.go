@@ -29,6 +29,17 @@ type MaasApi interface {
 	GetRoutes() route.Routes
 }
 
+type OptionResponse struct {
+	Leg   Leg    `json:"leg"`
+	Terms Terms  `json:"terms"`
+	Meta  string `json:"meta"`
+}
+
+type MaasFunctions interface {
+	// OptionsAtoB(from Coord, to Coord)
+	OptionsAround(position Coord) []OptionResponse
+}
+
 type MaasRequest struct {
 	Mode      string    `schema:"mode"`
 	FromLat   float64   `schema:"fromLat"`

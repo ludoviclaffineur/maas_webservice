@@ -13,8 +13,14 @@ func (t *App) GetRoutes() route.Routes {
 		route.Route{
 			Name:        "/getRouteAtoB",
 			Method:      "GET",
-			Pattern:     "/getRouteAtoB",
+			Pattern:     "/route",
 			HandlerFunc: t.getRouteAtoB,
+		},
+		route.Route{
+			Name:        "/getRouteAtoB",
+			Method:      "GET",
+			Pattern:     "/around",
+			HandlerFunc: t.getOptionsAround,
 		},
 	}
 }
