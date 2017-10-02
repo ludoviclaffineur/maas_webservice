@@ -17,7 +17,7 @@ func (t *App) GetRoutes() route.Routes {
 			HandlerFunc: t.getRouteAtoB,
 		},
 		route.Route{
-			Name:        "/getRouteAtoB",
+			Name:        "/around",
 			Method:      "GET",
 			Pattern:     "/around",
 			HandlerFunc: t.getOptionsAround,
